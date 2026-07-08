@@ -111,5 +111,22 @@ let project = Project(
                 ]
             )
         ),
+        .target(
+            name: "FeatureTests",
+            destinations: destinations,
+            product: .unitTests,
+            bundleId: "\(bundleId).featureTests",
+            deploymentTargets: .iOS(deploymentTarget),
+            infoPlist: .default,
+            buildableFolders: ["Tests/FeatureTests"],
+            dependencies: [
+                .target(name: "Feature"),
+            ],
+            settings: .settings(
+                base: [
+                    "DEVELOPMENT_TEAM": "QD353RFHM5",
+                ]
+            )
+        ),
     ]
 )
