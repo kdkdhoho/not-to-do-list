@@ -130,6 +130,23 @@ public enum AppIcon: String {
     case moon = "moon"
     case rocket = "rocket"                  // lucide: rocket
 
+    // MARK: - 잉걸 (Ember)
+    case flame = "flame"                              // lucide: flame — 스트릭 불꽃
+    case snowflake = "snowflake"                      // lucide: snowflake — 프리즈
+    case smoke = "smoke"                              // lucide: cigarette — 담배
+    case forkKnife = "fork.knife"                     // lucide: drumstick — 야식
+    case takeoutBag = "takeoutbag.and.cup.and.straw"  // lucide: utensils — 배달음식
+    case wineglass = "wineglass"                      // lucide: beer — 술
+    case cupAndSaucer = "cup.and.saucer"              // lucide: coffee — 카페 음료
+    case popcorn = "popcorn"                          // lucide: cookie — 군것질
+    case iphone = "iphone"                            // lucide: smartphone — SNS
+    case playRectangle = "play.rectangle"             // lucide: youtube — 쇼츠·유튜브
+    case gamecontroller = "gamecontroller"            // lucide: gamepad-2 — 게임
+    case archive = "archivebox"                       // lucide: archive — 보관
+    case banknote = "banknote"                        // lucide: banknote — 아낀 돈
+    case medal = "medal"                              // lucide: medal — 배지
+    case bookOpen = "book"                            // lucide: book-open — 독서 환산
+
     /// 대응하는 SF Symbol 이름.
     public var systemName: String { rawValue }
 
