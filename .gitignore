@@ -18,3 +18,4 @@ Derived/
 # Swift Package Manager
 .build/
 Packages/
+.superpowers/sdd/
