@@ -58,6 +58,15 @@ let project = Project(
                 "UISupportedInterfaceOrientations": [
                     "UIInterfaceOrientationPortrait",
                 ],
+                "UIAppFonts": [
+                    "Pretendard-Light.otf",
+                    "Pretendard-Regular.otf",
+                    "Pretendard-Medium.otf",
+                    "Pretendard-SemiBold.otf",
+                    "Pretendard-Bold.otf",
+                    "IBMPlexMono-Medium.ttf",
+                    "IBMPlexMono-SemiBold.ttf",
+                ],
             ]),
             resources: ["Resources/**"],
             buildableFolders: ["Sources/ServiceApp"],
