@@ -7,21 +7,13 @@ import SwiftUI
 /// 새 문자열 추가 절차:
 ///   1. Sources/Shared/Resources/Localizable.xcstrings 에 키-값 추가
 ///   2. 아래 enum에 해당 키에 대응하는 static property 추가
-///   3. 코드에서 AppStrings.Tab.home 등으로 사용
+///   3. 코드에서 AppStrings.Tab.today 등으로 사용
 ///
 /// 키 이름 규칙: {화면}.{용도} (예: onboarding.welcome)
 
 public enum AppStrings {
     // MARK: - Tab
     public enum Tab {
-        public static var home: String {
-            String(localized: "tab.home", bundle: .module)
-        }
-
-        public static var explore: String {
-            String(localized: "tab.explore", bundle: .module)
-        }
-
         public static var settings: String {
             String(localized: "tab.settings", bundle: .module)
         }
@@ -162,24 +154,6 @@ public enum AppStrings {
         }
     }
 
-    // MARK: - Home
-    public enum Home {
-        public static var navigationTitle: String {
-            String(localized: "home.navigationTitle", bundle: .module)
-        }
-    }
-
-    // MARK: - Explore
-    public enum Explore {
-        public static var title: String {
-            String(localized: "explore.title", bundle: .module)
-        }
-
-        public static var navigationTitle: String {
-            String(localized: "explore.navigationTitle", bundle: .module)
-        }
-    }
-
     // MARK: - Settings
     public enum Settings {
         public static var title: String {
@@ -188,18 +162,6 @@ public enum AppStrings {
 
         public static var navigationTitle: String {
             String(localized: "settings.navigationTitle", bundle: .module)
-        }
-    }
-
-    // MARK: - Detail
-    public enum Detail {
-        public static var navigationTitle: String {
-            String(localized: "detail.navigationTitle", bundle: .module)
-        }
-
-        /// ID 라벨 포맷. `String(format: AppStrings.Detail.id, value)`로 사용.
-        public static var id: String {
-            String(localized: "detail.id", bundle: .module)
         }
     }
 

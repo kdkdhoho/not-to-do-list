@@ -4,22 +4,22 @@ import Shared
 // MARK: - Main Tab
 
 public enum MainTab: String, CaseIterable {
-    case home
-    case explore
+    case today
+    case record
     case settings
 
     var title: String {
         switch self {
-        case .home: return AppStrings.Tab.home
-        case .explore: return AppStrings.Tab.explore
+        case .today: return AppStrings.Tab.today
+        case .record: return AppStrings.Tab.record
         case .settings: return AppStrings.Tab.settings
         }
     }
 
     var icon: AppIcon {
         switch self {
-        case .home: return .house
-        case .explore: return .search
+        case .today: return .house
+        case .record: return .calendar
         case .settings: return .settings
         }
     }

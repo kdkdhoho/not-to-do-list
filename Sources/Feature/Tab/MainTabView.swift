@@ -5,44 +5,34 @@ import Shared
 
 public struct MainTabView: View {
     @State private var appRouter: AppRouter
-    private let homeViewModel: HomeViewModel
-    private let makeDetailViewModel: (String) -> DetailViewModel
+    private let todayViewModel: TodayViewModel
 
-    public init(
-        appRouter: AppRouter,
-        homeViewModel: HomeViewModel,
-        makeDetailViewModel: @escaping (String) -> DetailViewModel
-    ) {
+    public init(appRouter: AppRouter, todayViewModel: TodayViewModel) {
         self._appRouter = State(wrappedValue: appRouter)
-        self.homeViewModel = homeViewModel
-        self.makeDetailViewModel = makeDetailViewModel
+        self.todayViewModel = todayViewModel
     }
 
     public var body: some View {
         TabView(selection: $appRouter.selectedTab) {
-            HomeNavigationView(
-                router: appRouter.home,
-                viewModel: homeViewModel,
-                makeDetailViewModel: makeDetailViewModel
-            )
-            .tabItem {
-                Label {
-                    Text(MainTab.home.title)
-                } icon: {
-                    Image(appIcon: MainTab.home.icon)
-                }
-            }
-            .tag(MainTab.home)
-
-            ExploreNavigationView(router: appRouter.explore)
+            TodayNavigationView(router: appRouter.today, viewModel: todayViewModel)
                 .tabItem {
                     Label {
-                        Text(MainTab.explore.title)
+                        Text(MainTab.today.title)
                     } icon: {
-                        Image(appIcon: MainTab.explore.icon)
+                        Image(appIcon: MainTab.today.icon)
                     }
                 }
-                .tag(MainTab.explore)
+                .tag(MainTab.today)
+
+            RecordPlaceholderView()
+                .tabItem {
+                    Label {
+                        Text(MainTab.record.title)
+                    } icon: {
+                        Image(appIcon: MainTab.record.icon)
+                    }
+                }
+                .tag(MainTab.record)
 
             SettingsNavigationView(router: appRouter.settings)
                 .tabItem {
@@ -54,6 +44,7 @@ public struct MainTabView: View {
                 }
                 .tag(MainTab.settings)
         }
+        .tint(AppColor.Text.primary)   // 탭에 잉걸 금지 — 탭 이동은 핵심 행동이 아니다
         .task {
             // 메인 진입 — 콜드스타트로 보류된 딥링크가 있으면 적용
             appRouter.flushPendingLink()

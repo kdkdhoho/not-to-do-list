@@ -7,27 +7,17 @@ import SwiftData
 
 @Observable
 final class AppDIContainer {
-    // MARK: - Singletons
-    private let networkClient: NetworkProviding
-    private let itemRepository: ItemRepository
-
     // MARK: - Init
-    init(
-        networkClient: NetworkProviding? = nil,
-        itemRepository: ItemRepository? = nil
-    ) {
-        let network = networkClient ?? NetworkClient()
-        self.networkClient = network
-        self.itemRepository = itemRepository ?? DefaultItemRepository(networkClient: network)
-    }
+    init() {}
 
     // MARK: - View Model Factory
-    func makeHomeViewModel() -> HomeViewModel {
-        HomeViewModel(repository: itemRepository)
-    }
 
-    func makeDetailViewModel(itemID: String) -> DetailViewModel {
-        DetailViewModel(itemID: itemID, repository: itemRepository)
+    @MainActor
+    func makeTodayViewModel() -> TodayViewModel {
+        TodayViewModel(checkInService: checkInService,
+                       habitRepository: habitRepository,
+                       trackingRepository: trackingRepository,
+                       currency: AppCurrency.default(for: .current))
     }
 
     // MARK: - 잉걸 도메인 (Plan 1)

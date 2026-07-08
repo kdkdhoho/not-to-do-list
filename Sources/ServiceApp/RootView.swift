@@ -29,10 +29,7 @@ struct RootView: View {
             case .main:
                 MainTabView(
                     appRouter: appRouter,
-                    homeViewModel: diContainer.makeHomeViewModel(),
-                    makeDetailViewModel: { itemID in
-                        diContainer.makeDetailViewModel(itemID: itemID)
-                    }
+                    todayViewModel: diContainer.makeTodayViewModel()
                 )
             }
         }
