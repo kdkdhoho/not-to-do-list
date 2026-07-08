@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Not-To-Do-List PRD v1</title>
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --canvas: #151210;
+    --surface: #1E1813;
+    --raised: #282017;
+    --hairline: #352C21;
+    --ember: #FF6B2C;
+    --ember-soft: rgba(255, 107, 44, 0.14);
+    --frost: #9CCFE7;
+    --ink: #F3ECE2;
+    --ink-muted: #A79A8B;
+    --ink-faint: #6E6255;
+    --sans: "Pretendard Variable", Pretendard, -apple-system, "Apple SD Gothic Neo", sans-serif;
+    --mono: "IBM Plex Mono", "SF Mono", ui-monospace, monospace;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--canvas);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-size: 16px;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 860px; margin: 0 auto; padding: 0 24px 120px; }
+
+  /* ---------- header ---------- */
+  header { padding: 88px 0 48px; border-bottom: 1px solid var(--hairline); }
+  header .eyebrow {
+    font-family: var(--mono); font-size: 12px; font-weight: 500; letter-spacing: 0.18em;
+    color: var(--ember); margin-bottom: 18px;
+  }
+  header h1 { font-size: 40px; font-weight: 700; letter-spacing: -0.02em; line-height: 1.2; }
+  header .meta { margin-top: 20px; display: flex; gap: 24px; flex-wrap: wrap; font-size: 13px; color: var(--ink-faint); }
+  header .meta b { color: var(--ink-muted); font-weight: 500; }
+  header .thesis {
+    margin-top: 28px; font-size: 17px; color: var(--ink-muted); max-width: 640px;
+  }
+  header .thesis strong { color: var(--ink); font-weight: 600; }
+  .revision {
+    margin-top: 22px; background: var(--ember-soft); border-radius: 12px; padding: 12px 18px;
+    font-size: 13.5px; color: var(--ink-muted); max-width: 640px;
+  }
+  .revision b { color: var(--ink); }
+
+  /* ---------- toc ---------- */
+  nav.toc { padding: 32px 0 8px; border-bottom: 1px solid var(--hairline); }
+  nav.toc ol {
+    list-style: none; display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px 24px;
+    counter-reset: toc;
+  }
+  nav.toc li { counter-increment: toc; }
+  nav.toc a {
+    display: block; padding: 6px 0; font-size: 13.5px; color: var(--ink-muted); text-decoration: none;
+  }
+  nav.toc a::before {
+    content: counter(toc, decimal-leading-zero); font-family: var(--mono); font-size: 11px;
+    color: var(--ink-faint); margin-right: 10px;
+  }
+  nav.toc a:hover { color: var(--ink); }
+
+  /* ---------- sections ---------- */
+  section { padding: 64px 0 0; }
+  .sec-label {
+    font-family: var(--mono); font-size: 12px; font-weight: 500;
+    color: var(--ember); letter-spacing: 0.15em; margin-bottom: 10px;
+  }
+  h2 { font-size: 26px; font-weight: 700; letter-spacing: -0.01em; margin-bottom: 18px; }
+  h3 { font-size: 17px; font-weight: 600; margin: 34px 0 12px; }
+  p { color: var(--ink-muted); margin-bottom: 12px; max-width: 720px; }
+  p strong, li strong { color: var(--ink); font-weight: 600; }
+  ul, ol { margin: 0 0 12px 20px; color: var(--ink-muted); }
+  li { margin-bottom: 7px; }
+  a { color: var(--ember); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  .callout {
+    background: var(--surface); border-radius: 16px; padding: 20px 24px; margin: 18px 0;
+    font-size: 14.5px; color: var(--ink-muted);
+  }
+  .callout b { color: var(--ink); }
+  .callout.ember { background: var(--ember-soft); }
+
+  /* ---------- tables ---------- */
+  table { width: 100%; border-collapse: collapse; margin: 16px 0 8px; font-size: 14px; }
+  th {
+    text-align: left; font-size: 11px; font-weight: 600; letter-spacing: 0.08em;
+    text-transform: uppercase; color: var(--ink-faint); padding: 10px 12px 8px;
+    border-bottom: 1px solid var(--hairline);
+  }
+  td { padding: 11px 12px; border-bottom: 1px solid var(--hairline); color: var(--ink-muted); vertical-align: top; }
+  td:first-child { color: var(--ink); font-weight: 500; white-space: nowrap; }
+  td.wrap-ok { white-space: normal; }
+  .num { font-family: var(--mono); font-size: 13px; }
+  code {
+    font-family: var(--mono); font-size: 12.5px; color: var(--ink);
+    background: var(--raised); padding: 2px 6px; border-radius: 6px;
+  }
+
+  /* ---------- copy examples ---------- */
+  .copy-list { list-style: none; margin-left: 0; }
+  .copy-list li {
+    background: var(--surface); border-radius: 12px; padding: 12px 16px; margin-bottom: 8px;
+    font-size: 14.5px;
+  }
+  .copy-list li .who { font-size: 11px; font-weight: 600; letter-spacing: 0.06em; color: var(--ink-faint); display: block; margin-bottom: 3px; text-transform: uppercase; }
+  .ok { color: var(--ember); font-weight: 600; }
+  .no { color: var(--ink-faint); }
+
+  /* ---------- scope columns ---------- */
+  .scope { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 18px; }
+  .scope .col { background: var(--surface); border-radius: 16px; padding: 24px; }
+  .scope h4 { font-size: 13px; font-weight: 700; letter-spacing: 0.08em; margin-bottom: 12px; }
+  .scope .in h4 { color: var(--ember); }
+  .scope .out h4 { color: var(--ink-faint); }
+  .scope ul { list-style: none; margin: 0; }
+  .scope li { font-size: 13.5px; color: var(--ink-muted); padding: 7px 0 7px 20px; position: relative; border-bottom: 1px solid var(--hairline); }
+  .scope li:last-child { border-bottom: none; }
+  .scope .in li::before { content: "●"; color: var(--ember); position: absolute; left: 0; font-size: 8px; top: 12px; }
+  .scope .out li::before { content: "○"; color: var(--ink-faint); position: absolute; left: 0; font-size: 9px; top: 11px; }
+
+  /* ---------- i18n axis cards ---------- */
+  .axis { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin: 18px 0; }
+  .axis .ax { background: var(--surface); border-radius: 16px; padding: 20px; }
+  .axis .ax .t { font-size: 15px; font-weight: 600; margin-bottom: 6px; }
+  .axis .ax .t .mono-tag { font-family: var(--mono); font-size: 11px; color: var(--ember); display: block; margin-bottom: 6px; letter-spacing: 0.1em; }
+  .axis .ax .d { font-size: 13px; color: var(--ink-muted); line-height: 1.55; }
+
+  footer { margin-top: 96px; padding-top: 28px; border-top: 1px solid var(--hairline); font-size: 12px; color: var(--ink-faint); display: flex; justify-content: space-between; }
+
+  @media (max-width: 720px) {
+    header h1 { font-size: 30px; }
+    nav.toc ol { grid-template-columns: 1fr 1fr; }
+    .scope { grid-template-columns: 1fr; }
+    .axis { grid-template-columns: 1fr; }
+    td:first-child { white-space: normal; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="eyebrow">NOT-TO-DO-LIST · PRD · V1</div>
+    <h1>끊고 싶은 습관을 등록하고,<br>매일 밤 하루를 "마감"한다</h1>
+    <div class="meta">
+      <span><b>작성일</b> 2026-07-06</span>
+      <span><b>상태</b> 확정 (구현 계획 수립 전 기준 문서)</span>
+      <span><b>이전 문서</b> docs/PLAN.md (2026-06-29) — 본 문서가 대체</span>
+    </div>
+    <p class="thesis">일반 To-Do 앱이 "할 일"을 더하는 도구라면, 이 앱은 "하지 말 것"을 정해두고 안 한 날을 기록한다.
+    제품의 심장은 습관별 절제 일수가 아니라 <strong>체크인 스트릭</strong> — 매일 하루를 마감한 연속 일수다.
+    무너진 날에도 정직하게 기록만 하면 스트릭은 유지된다. <strong>기록 행위 자체가 보상이다.</strong></p>
+    <div class="revision"><b>개정 (2026-07-06)</b> — i18n 반영. v1부터 한국을 포함한 <b>전 세계 App Store 동시 출시</b>로 확정 (§6 신설)</div>
+  </header>
+
+  <nav class="toc">
+    <ol>
+      <li><a href="#s1">개요</a></li>
+      <li><a href="#s2">교훈과 재설계 원칙</a></li>
+      <li><a href="#s3">용어 정의</a></li>
+      <li><a href="#s4">코어 루프</a></li>
+      <li><a href="#s5">습관 & 절제 진도</a></li>
+      <li><a href="#s6">국제화(i18n) & 글로벌 배포</a></li>
+      <li><a href="#s7">배지</a></li>
+      <li><a href="#s8">알림</a></li>
+      <li><a href="#s9">온보딩</a></li>
+      <li><a href="#s10">홈 위젯</a></li>
+      <li><a href="#s11">엣지 케이스 & 정책</a></li>
+      <li><a href="#s12">성공 지표 & 측정</a></li>
+      <li><a href="#s13">MVP 범위</a></li>
+      <li><a href="#s14">UX 라이팅 원칙</a></li>
+      <li><a href="#s15">비목표</a></li>
+      <li><a href="#s16">참고 자료</a></li>
+    </ol>
+  </nav>
+
+  <!-- ============ 1 ============ -->
+  <section id="s1">
+    <div class="sec-label">01 — 개요</div>
+    <h2>절제 트래커</h2>
+    <p>끊고 싶은 습관을 등록하고, <strong>매일 밤 하루를 "마감"</strong>하며 무너지지 않은 날을 쌓아가는 절제 트래커.</p>
+    <ul>
+      <li><strong>타깃</strong> — 나쁜 습관(흡연·야식·술·SNS 등)을 끊고 싶은 일반 사용자 — 전 세계. 1차 집중 시장은 한국·영어권</li>
+      <li><strong>플랫폼</strong> — iOS. <strong>v1부터 App Store 전 지역 동시 출시</strong> (§6)</li>
+      <li><strong>언어</strong> — 한국어(소스)·영어. 그 외 로케일은 영어 폴백</li>
+      <li><strong>가격</strong> — 완전 무료 (수익화는 검증 후 별도 과제)</li>
+    </ul>
+  </section>
+
+  <!-- ============ 2 ============ -->
+  <section id="s2">
+    <div class="sec-label">02 — 이전 버전의 교훈과 재설계 원칙</div>
+    <h2>자동 스트릭 모델의 폐기</h2>
+    <h3>2.1 이전 버전(PLAN.md)의 문제</h3>
+    <p>이전 설계는 "자동 스트릭" 모델이었다: 아무것도 안 하면 매일 +1, 무너졌을 때만 기록.
+    저마찰이 장점이었지만 두 가지 구조적 결함이 있었다.</p>
+    <ol>
+      <li><strong>앱을 열 이유가 없다.</strong> 안 열어도 스트릭이 오르는 앱은 돌아올 이유를 설계적으로 제거한다.</li>
+      <li><strong>데이터가 부풀려진다.</strong> "기록 안 함 = 성공" 가정이라, 방치해도 스트릭이 오른다.</li>
+    </ol>
+    <p>또한 엣지 케이스·성공 지표·유저 시나리오 없이 구현에 들어가 중간에 흔들렸다.
+    본 문서는 그 공백을 채우는 것을 목표로 한다.</p>
+
+    <h3>2.2 재설계 원칙 (듀오링고 5원칙 매핑)</h3>
+    <table>
+      <tr><th>#</th><th>원칙</th><th>본 제품의 적용</th></tr>
+      <tr><td class="num">1</td><td>진짜 문제는 "안 오는 것"</td><td class="wrap-ok">매일 돌아올 이유 = 체크인 스트릭. 자동 성공 모델 폐기</td></tr>
+      <tr><td class="num">2</td><td>스트릭은 잃기 싫은 것 (손실회피)</td><td class="wrap-ok">🔥는 매일 마감해야만 유지. 프리즈로 실수 1~2일은 보호, 알림은 손실회피 카피</td></tr>
+      <tr><td class="num">3</td><td>습관은 딱 하나로 몰기</td><td class="wrap-ok">핵심 행동은 "오늘 마감" 단 하나. 습관이 몇 개든 마감은 하루 1회</td></tr>
+      <tr><td class="num">4</td><td>죄책감 대신 진도</td><td class="wrap-ok">무너져도 기록하면 🔥 유지. 누적 자산(총 절제일·아낀 돈·최고 기록)은 절대 리셋 안 됨</td></tr>
+      <tr><td class="num">5</td><td>감으로 만들지 마라</td><td class="wrap-ok">KPI·수집 이벤트를 본 문서에 정의, 프라이버시 친화 분석 도구로 측정</td></tr>
+    </table>
+  </section>
+
+  <!-- ============ 3 ============ -->
+  <section id="s3">
+    <div class="sec-label">03 — 용어 정의</div>
+    <h2>용어 정의</h2>
+    <table>
+      <tr><th>용어</th><th>정의</th></tr>
+      <tr><td>체크인 (마감)</td><td class="wrap-ok">하루 1회, 그날 각 습관의 성공/실패를 확정하는 행위</td></tr>
+      <tr><td>🔥 체크인 스트릭</td><td class="wrap-ok">연속으로 하루를 마감한 일수. 앱의 메인 스트릭</td></tr>
+      <tr><td>❄ 프리즈</td><td class="wrap-ok">체크인을 놓친 하루를 자동으로 메워 🔥를 보호하는 아이템</td></tr>
+      <tr><td>무너짐 (lapse)</td><td class="wrap-ok">특정 습관을 그날 하고 만 것. 습관·날짜 단위로 기록</td></tr>
+      <tr><td>절제일</td><td class="wrap-ok">특정 습관을 무너지지 않고 보낸 날</td></tr>
+      <tr><td>절제 진도</td><td class="wrap-ok">습관별 누적 자산: 총 절제일, 현재 연속 절제일, 최고 연속 기록, 아낀 돈(시간)</td></tr>
+      <tr><td>미기록</td><td class="wrap-ok">소급 범위를 지나 성공/실패를 확정하지 못한 날</td></tr>
+      <tr><td>하루 경계</td><td class="wrap-ok">오전 4시. 새벽 1시의 체크인은 전날 마감으로 처리</td></tr>
+      <tr><td>앱 통화</td><td class="wrap-ok">아낀 돈의 입력·계산·표시에 쓰는 전역 통화 1개. 최초 실행 시 기기 로케일로 결정, 설정에서 변경 가능 (§6.2)</td></tr>
+    </table>
+  </section>
+
+  <!-- ============ 4 ============ -->
+  <section id="s4">
+    <div class="sec-label">04 — 코어 루프</div>
+    <h2>하루의 사이클</h2>
+    <h3>4.1 기본 사이클 (하루)</h3>
+    <ol>
+      <li>(선택) 낮 동안 유혹에 지면 해당 습관에 <strong>즉시 무너짐 기록</strong> — 선택 메모 포함 가능</li>
+      <li>저녁 리마인더(기본 21:00)가 마감을 유도</li>
+      <li>사용자가 <strong>"오늘 마감"</strong> 실행: 습관 목록에서 무너진 것만 ❌ 체크, 나머지는 일괄 "참았다"로 확정. 즉시 기록해 둔 무너짐은 미리 반영돼 있다</li>
+      <li>마감 완료 → 🔥 +1, 절제 진도·아낀 돈 갱신, 해당되면 배지 획득</li>
+      <li>그날 다시 마감할 수 없다 (달력 날짜당 1회)</li>
+    </ol>
+
+    <h3>4.2 규칙 상세</h3>
+    <table>
+      <tr><th>규칙</th><th>결정</th><th>근거</th></tr>
+      <tr><td>하루 경계</td><td class="wrap-ok">오전 4시 고정</td><td class="wrap-ok">야식·밤 SNS 등 밤 습관이 주 타깃. 자정 직후 마감을 전날로 귀속</td></tr>
+      <tr><td>마감 단위</td><td class="wrap-ok">하루 1회, 모든 습관 일괄</td><td class="wrap-ok">원칙 3 — 핵심 행동을 하나로</td></tr>
+      <tr><td>성공/실패 단위</td><td class="wrap-ok">습관·날짜당 성공 또는 실패 (이진)</td><td class="wrap-ok">하루 다중 무너짐 횟수는 로드맵</td></tr>
+      <tr><td>즉시 무너짐 기록</td><td class="wrap-ok">언제든 가능, 그날 마감에 자동 반영</td><td class="wrap-ok">유혹 순간의 기록 마찰 최소화</td></tr>
+      <tr><td>기록 수정</td><td class="wrap-ok">오늘·어제까지만 수정 가능</td><td class="wrap-ok">그 이상은 불변 — 데이터 정직성</td></tr>
+      <tr><td>소급 체크인</td><td class="wrap-ok"><strong>어제 분만</strong> 소급 가능. 접속 시 "어제는 어땠어요?" 확인으로 마감 처리 (프리즈 소모 없음). 그제 이전의 공백은 소급 불가</td><td class="wrap-ok">하루 실수 구제</td></tr>
+      <tr><td>미래 기록</td><td class="wrap-ok">금지</td><td class="wrap-ok">시계 조작 대응 최소선</td></tr>
+    </table>
+
+    <h3>4.3 체크인 스트릭 & 프리즈</h3>
+    <ul>
+      <li>🔥 = 연속 마감 일수 (소급 마감, 프리즈로 메운 날 포함)</li>
+      <li><strong>무너진 날에도 마감만 하면 🔥는 유지된다.</strong> 실패를 기록하는 것이 벌이 아니라 스트릭을 지키는 행동이다</li>
+      <li>프리즈 적립: <strong>연속 체크인 7일마다 1개</strong>, 최대 <strong>2개</strong> 보유. 시작 보유량 0개, 🔥 리셋 시 적립 카운터도 리셋 (보유분은 유지)</li>
+      <li>프리즈 사용: 소급으로 메우지 못한 공백일에 하루 1개씩 자동 소모되어 🔥 유지. 사용된 날은 ❄로 표시되고 습관 기록은 미기록 처리</li>
+      <li>소급(어제 1일) + 프리즈(최대 2개) 조합으로 최대 <strong>3일 공백</strong>까지 🔥를 지킬 수 있다. 그 이상 → 🔥 리셋. 최고 🔥 기록과 누적 자산은 영구 보존</li>
+    </ul>
+    <div class="callout ember">
+      <b>복귀 화면 (원칙 4)</b> — 🔥 리셋 후 복귀 시 죄책감 카피 금지.
+      "스트릭은 끊겼지만 누적 절제 34일 · 아낀 돈 128,000원은 그대로예요" 프레이밍.
+    </div>
+  </section>
+
+  <!-- ============ 5 ============ -->
+  <section id="s5">
+    <div class="sec-label">05 — 습관 & 절제 진도</div>
+    <h2>사라지지 않는 자산</h2>
+    <h3>5.1 습관 속성</h3>
+    <ul>
+      <li>이름, 아이콘, 색</li>
+      <li><strong>환산 단가</strong> — "이 습관을 하루 참았을 때 아끼는 양". 단위는 <strong>앱 통화/일</strong> 또는 <strong>분/일</strong> 중 택 1</li>
+      <li>추적 시작일(= 등록일), 보관 여부</li>
+    </ul>
+
+    <h3>5.2 절제 진도</h3>
+    <table>
+      <tr><th>지표</th><th>계산</th></tr>
+      <tr><td>현재 연속 절제일 (D+N)</td><td class="wrap-ok">마지막 무너짐 다음 날 ~ 오늘. 미기록일은 끊지 않음</td></tr>
+      <tr><td>최고 연속 기록</td><td class="wrap-ok">역대 최장 연속 절제 구간. 영구 보존</td></tr>
+      <tr><td>총 절제일</td><td class="wrap-ok">추적일 수 − 무너진 날 수</td></tr>
+      <tr><td>아낀 돈(시간)</td><td class="wrap-ok">총 절제일 × 환산 단가</td></tr>
+    </table>
+    <div class="callout">
+      <b>관대 모델 채택</b> — 미기록일도 무너짐으로 기록되지 않은 한 절제일에 포함한다.
+      데이터 정직성은 체크인 스트릭이 담당하고, 자산 지표는 동기부여에 최적화한다는 역할 분리다.
+    </div>
+
+    <h3>5.3 프리셋 라이브러리</h3>
+    <p>습관 추가 시 프리셋에서 고르면 이름·아이콘·환산 단가가 미리 채워진다 (수정 가능).
+    직접 만들기도 가능하며, 이때 환산 단가를 입력하지 않으면 절제일만 추적한다.</p>
+    <p><strong>돈 단위 프리셋</strong> — 단가는 <strong>통화별 테이블</strong>로 정의한다 (§6.3). v1은 KRW·USD 2종을 제공한다.
+    그 외 통화 사용자에게는 프리셋의 이름·아이콘만 채워지고 단가는 빈칸으로 제안된다 — 체감 단가를 직접 입력한다 (미입력 시 절제일만 추적, 기존 규칙과 동일).</p>
+
+    <p><strong>KRW 테이블</strong> — 대한민국 카테고리별 평균 소비액을 근거로 한다. 공식 통계가 없는 항목은 추정임을 명시한다.</p>
+    <table>
+      <tr><th>프리셋</th><th>기본 환산 단가</th><th>근거</th></tr>
+      <tr><td>담배</td><td class="num">3,000원/일</td><td class="wrap-ok">흡연자 하루 평균 13.3개비(국민건강통계) × 궐련 대표가 4,500원/갑 ≈ 2,990원</td></tr>
+      <tr><td>야식</td><td class="num">20,000원/일</td><td class="wrap-ok">야식 대표 메뉴(치킨·피자 등) 1회 주문 평균 2만원대</td></tr>
+      <tr><td>배달음식</td><td class="num">30,000원/일</td><td class="wrap-ok">2024년 배달앱 거래액 약 40조원 ÷ 결제 약 13.6억 건 ≈ 회당 29,400원</td></tr>
+      <tr><td>술</td><td class="num">15,000원/일</td><td class="wrap-ok">1회 음주(주류+안주) 평균 추정. 가구 월평균 주류지출(약 1.1만원)은 외식 술자리 제외 수치라 하한으로만 참고</td></tr>
+      <tr><td>온라인 쇼핑</td><td class="num">10,000원/일</td><td class="wrap-ok">충동구매 1건 기준 보수적 추정 (회당 객단가 공식 통계 부재)</td></tr>
+      <tr><td>카페 음료</td><td class="num">5,000원/일</td><td class="wrap-ok">프랜차이즈 음료 1잔 평균가</td></tr>
+      <tr><td>군것질</td><td class="num">5,000원/일</td><td class="wrap-ok">편의점 간식 1회 평균 추정</td></tr>
+    </table>
+
+    <p style="margin-top:20px"><strong>USD 테이블</strong> — 미국 평균 소비 기준 추정치. 출시 전 근거 보강을 과제로 남긴다 (KRW 테이블 수준의 출처 명시가 목표).</p>
+    <table>
+      <tr><th>프리셋</th><th>기본 환산 단가</th></tr>
+      <tr><td>담배</td><td class="num">$6/일</td></tr>
+      <tr><td>야식</td><td class="num">$15/일</td></tr>
+      <tr><td>배달음식</td><td class="num">$25/일</td></tr>
+      <tr><td>술</td><td class="num">$12/일</td></tr>
+      <tr><td>온라인 쇼핑</td><td class="num">$10/일</td></tr>
+      <tr><td>카페 음료</td><td class="num">$5/일</td></tr>
+      <tr><td>군것질</td><td class="num">$3/일</td></tr>
+    </table>
+
+    <p style="margin-top:20px"><strong>시간 단위 프리셋</strong> — 지역 무관 공통. 아낀 시간을 숫자로만 보여주지 않고,
+    <strong>그 시간으로 할 수 있었던 행동</strong>으로 환산해 보여준다 (예: "책 30페이지 읽을 시간을 아꼈어요").</p>
+    <table>
+      <tr><th>프리셋</th><th>기본 환산 단가</th></tr>
+      <tr><td>SNS</td><td class="num">60분/일</td></tr>
+      <tr><td>쇼츠·유튜브</td><td class="num">60분/일</td></tr>
+      <tr><td>게임</td><td class="num">90분/일</td></tr>
+    </table>
+    <p>행동 환산 규칙 (MVP는 독서 1종, 페이지·권 단위는 전 지역 공통):</p>
+    <ul>
+      <li>책 1페이지 ≈ 2분 → 60분 = 책 30페이지</li>
+      <li>300페이지 ≈ 책 1권 → 누적 600분마다 "책 1권" 단위로 승격 표시</li>
+      <li>운동·영어 단어 등 추가 환산 카탈로그는 로드맵</li>
+    </ul>
+    <p>단가의 정확도보다 "체감되는 숫자"가 목적이다. 빈도 보정(주 N회 습관 등)은 로드맵.</p>
+  </section>
+
+  <!-- ============ 6 ============ -->
+  <section id="s6">
+    <div class="sec-label">06 — 국제화(i18n) & 글로벌 배포 · 신설</div>
+    <h2>v1부터 전 세계로</h2>
+    <p>v1부터 한국을 포함한 <strong>App Store 전 지역에 동시 출시</strong>한다.
+    코어 루프(마감·스트릭·프리즈)는 지역 무관 공통이고, 지역화가 필요한 축은 <strong>언어·통화·포맷</strong> 세 가지다.</p>
+
+    <div class="axis">
+      <div class="ax"><div class="t"><span class="mono-tag">6.1 — LANGUAGE</span>언어</div>
+        <div class="d">한국어(소스)·영어. 그 외 로케일은 영어 폴백. 모든 문자열은 String Catalog 키로 관리 — 하드코딩 금지. 영어는 직역이 아니라 로케일별 카피라이팅 (§14). 추가 언어는 다운로드 상위 지역 순 로드맵.</div></div>
+      <div class="ax"><div class="t"><span class="mono-tag">6.2 — CURRENCY</span>통화 (앱 통화)</div>
+        <div class="d">전역 1개. 최초 실행 시 로케일 통화로 자동 설정, 설정에서 변경 가능. v1 주요 통화 약 20종, 미지원 로케일은 USD 제안. <b>환율 연동 없음</b> — 통화 변경 시 수치 유지·단위만 교체, 변경 전 안내.</div></div>
+      <div class="ax"><div class="t"><span class="mono-tag">6.4 — FORMAT</span>포맷·캘린더·시간</div>
+        <div class="d">날짜·숫자·통화 표기는 시스템 로케일(FormatStyle). 캘린더 주 시작 요일도 로케일 추종. 하루 경계(오전 4시)·알림 기본 시각(21/23시)은 기기 로컬 시간 — 전 지역 공통 정책.</div></div>
+    </div>
+
+    <h3>6.3 통화별 테이블</h3>
+    <ul>
+      <li><strong>프리셋 단가</strong>: KRW(근거 기반)·USD(추정) 2종 제공, 그 외 통화는 단가 빈칸 제안 (§5.3)</li>
+      <li><strong>배지 마일스톤</strong>: 누적 아낀 돈 임계값을 통화별로 체감 단위에 맞게 정의 (§7). 테이블에 없는 지원 통화는 USD 임계값 상당 규모로 반올림해 정의한다</li>
+    </ul>
+  </section>
+
+  <!-- ============ 7 ============ -->
+  <section id="s7">
+    <div class="sec-label">07 — 배지</div>
+    <h2>게이미피케이션</h2>
+    <table>
+      <tr><th>계열</th><th>마일스톤</th></tr>
+      <tr><td>체크인 스트릭</td><td class="num">3 · 7 · 14 · 30 · 60 · 100일</td></tr>
+      <tr><td>습관별 연속 절제</td><td class="num">7 · 30 · 100일</td></tr>
+      <tr><td>누적 아낀 돈</td><td class="wrap-ok">통화별 임계값 테이블 — <span class="num">KRW: 1만 · 5만 · 10만 · 50만원 / USD: $10 · $50 · $100 · $500</span> (앱 통화 기준 합산. 시간 단위 습관은 별도 마일스톤 없음)</td></tr>
+      <tr><td>정직 배지</td><td class="wrap-ok">무너짐을 기록한 다음 날에도 마감 지속 (원칙 4의 배지화)</td></tr>
+    </table>
+    <ul>
+      <li>획득 시점: 마감 완료 직후 일괄 판정·표시</li>
+      <li>획득한 배지는 회수되지 않는다</li>
+    </ul>
+  </section>
+
+  <!-- ============ 8 ============ -->
+  <section id="s8">
+    <div class="sec-label">08 — 알림</div>
+    <h2>단일 행동에 몰아주는 알림</h2>
+    <ul>
+      <li>앱 전체에 <strong>마감 리마인더 1개</strong> (기본 21:00, 시간 변경·끄기 가능) — 습관별 알림이 아니라 단일 행동(마감)에 몰아준다</li>
+      <li>마감하지 않은 채 밤이 깊으면(23:00) <strong>스트릭 위험 알림</strong> 1회: "🔥 23일이 사라지기 전에 오늘을 마감해요" — 손실회피 카피</li>
+      <li>이미 마감한 날은 어떤 알림도 보내지 않는다</li>
+      <li>알림 권한은 온보딩 중 첫 습관 등록 후 요청</li>
+    </ul>
+  </section>
+
+  <!-- ============ 9 ============ -->
+  <section id="s9">
+    <div class="sec-label">09 — 온보딩</div>
+    <h2>3단계 이내, 반전 하나만 심는다</h2>
+    <p>첫 실행 시 3단계 이내로 코어 루프를 이해시키고 첫 습관 등록까지 완료시킨다.</p>
+    <ol>
+      <li>컨셉: "안 한 날이 쌓입니다"</li>
+      <li>스트릭 규칙 한 문장: <strong>"무너져도, 기록하면 스트릭은 유지돼요"</strong> — 규칙 전체를 설명하지 않고 이 반전 하나만 심는다</li>
+      <li>프리셋에서 첫 습관 등록 → 알림 권한 요청 → 메인 진입</li>
+    </ol>
+    <p>온보딩 완주가 첫 KPI이므로, 건너뛰기는 습관 등록 단계 이전까지만 허용한다.</p>
+  </section>
+
+  <!-- ============ 10 ============ -->
+  <section id="s10">
+    <div class="sec-label">10 — 홈 위젯</div>
+    <h2>마감 유도가 목적</h2>
+    <ul>
+      <li><strong>소형</strong> — 🔥 스트릭 + 오늘 마감 여부</li>
+      <li><strong>중형</strong> — 소형 내용 + 습관별 D+N, 총 아낀 돈</li>
+      <li>위젯 탭 → 앱 실행 (마감 유도가 목적)</li>
+      <li>데이터는 마지막 마감 기준 스냅샷이면 충분 (실시간 갱신 비목표)</li>
+    </ul>
+  </section>
+
+  <!-- ============ 11 ============ -->
+  <section id="s11">
+    <div class="sec-label">11 — 엣지 케이스 & 정책</div>
+    <h2>엣지 케이스 & 정책</h2>
+    <table>
+      <tr><th>상황</th><th>정책</th></tr>
+      <tr><td>습관 추가 당일</td><td class="wrap-ok">추적 시작일 = 추가일. 그날 마감부터 대상</td></tr>
+      <tr><td>마감 후 습관 추가</td><td class="wrap-ok">새 습관은 다음 날부터 마감 대상 (당일 기록 없음)</td></tr>
+      <tr><td>습관 보관</td><td class="wrap-ok">마감 대상에서 제외. 누적 자산 보존, 열람 가능, 복원 가능</td></tr>
+      <tr><td>습관 삭제</td><td class="wrap-ok">기록 포함 영구 삭제. 확인 필수 + 보관 권장 안내</td></tr>
+      <tr><td>습관 0개</td><td class="wrap-ok">마감 불가. 🔥는 끊기지 않고 일시정지 (습관 재등록 시 이어서 카운트)</td></tr>
+      <tr><td>소급 확인 "기억 안 남"</td><td class="wrap-ok">해당 습관 그날 미기록 처리 (관대 모델에 따라 절제일 포함)</td></tr>
+      <tr><td>시간대 이동</td><td class="wrap-ok">기기 로컬 시간 기준. 달력 날짜당 마감 1회 원칙만 지킨다</td></tr>
+      <tr><td>기기 시계 조작</td><td class="wrap-ok">미래 날짜 기록 금지. 완벽 방지는 비목표 (로컬 앱)</td></tr>
+      <tr><td>앱 통화 변경</td><td class="wrap-ok">금액 수치는 재환산 없이 유지, 단위만 교체. 변경 전 안내 필수 (§6.2)</td></tr>
+      <tr><td>미지원 로케일</td><td class="wrap-ok">언어는 영어 폴백, 통화는 USD 기본 제안</td></tr>
+      <tr><td>데이터 초기화</td><td class="wrap-ok">설정에서 전체 삭제 가능. 2단계 확인</td></tr>
+    </table>
+  </section>
+
+  <!-- ============ 12 ============ -->
+  <section id="s12">
+    <div class="sec-label">12 — 성공 지표 & 측정 계획</div>
+    <h2>감으로 만들지 마라</h2>
+    <h3>12.1 KPI</h3>
+    <table>
+      <tr><th>지표</th><th>목표</th></tr>
+      <tr><td>온보딩 완료율</td><td class="num">≥ 80%</td></tr>
+      <tr><td>체크인 완료율 (DAU 중 당일 마감)</td><td class="num">≥ 60%</td></tr>
+      <tr><td>리텐션 D1 / D7 / D30</td><td class="num">≥ 40% / 20% / 10%</td></tr>
+    </table>
+    <p>KPI는 전체와 함께 <strong>주요 지역(한국·영어권)별로 분리해서</strong> 본다 — 언어·카피 품질의 지역 차를 조기에 발견하기 위함.</p>
+
+    <h3>12.2 수집 이벤트</h3>
+    <p>프라이버시 친화 익명 분석 도구(TelemetryDeck 계열)를 사용한다.
+    <strong>습관 이름·메모 등 사용자 콘텐츠는 절대 전송하지 않는다.</strong> 이벤트와 익명 속성만 수집한다.
+    익명 속성에 <strong>언어·스토어 지역·앱 통화</strong>를 포함한다.</p>
+    <ul>
+      <li>온보딩 완료</li>
+      <li>습관 추가 (프리셋/커스텀 구분)</li>
+      <li>체크인 완료 (당일/소급 구분)</li>
+      <li>무너짐 기록 (즉시/마감 시 구분)</li>
+      <li>프리즈 소모</li>
+      <li>배지 획득</li>
+      <li>위젯 탭, 알림 탭</li>
+    </ul>
+  </section>
+
+  <!-- ============ 13 ============ -->
+  <section id="s13">
+    <div class="sec-label">13 — MVP 범위</div>
+    <h2>1.0의 경계</h2>
+    <div class="scope">
+      <div class="col in">
+        <h4>포함 (1.0)</h4>
+        <ul>
+          <li>습관 등록·편집·보관·삭제 + 프리셋 라이브러리</li>
+          <li>오늘 마감 체크인 (즉시 무너짐 기록, 소급 포함)</li>
+          <li>🔥 체크인 스트릭 + 프리즈</li>
+          <li>절제 진도 (연속·총 절제일·아낀 돈/시간) + 기록 캘린더</li>
+          <li>배지</li>
+          <li>온보딩</li>
+          <li>마감 리마인더 + 스트릭 위험 알림</li>
+          <li>홈 위젯 (소형·중형)</li>
+          <li>프라이버시 친화 분석</li>
+          <li><strong>국제화</strong>: 한국어·영어, App Store 전 지역 출시, 앱 통화 + 통화별 단가·마일스톤 테이블 (§6)</li>
+        </ul>
+      </div>
+      <div class="col out">
+        <h4>비포함 (로드맵)</h4>
+        <ul>
+          <li>iCloud 동기화·백업</li>
+          <li>습관별 유혹 시간대 알림</li>
+          <li>하루 다중 무너짐 횟수 기록, 단가 빈도 보정</li>
+          <li>고급 통계·인사이트</li>
+          <li>수익화</li>
+          <li>소셜·공유, Apple Watch</li>
+          <li>추가 언어(일본어 등), 환율 연동·통화 간 재환산, KRW·USD 외 지역별 프리셋 단가 테이블</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 14 ============ -->
+  <section id="s14">
+    <div class="sec-label">14 — UX 라이팅 원칙</div>
+    <h2>언어 공통 원칙, 로케일별 집필</h2>
+    <p>라이팅 원칙은 <strong>언어 공통</strong>이다: 친근한 대화체, 능동형, 긍정형, 죄책감 카피 금지.
+    번역이 아니라 <strong>로케일별 카피라이팅</strong>으로 작성한다 — 소스는 한국어, 영어는 같은 원칙으로 별도 집필한다.</p>
+
+    <h3>한국어 — <a href="https://developers-apps-in-toss.toss.im/design/ux-writing.html">토스 UX Writing 가이드</a> 기준</h3>
+    <table>
+      <tr><th>원칙</th><th>규칙</th><th>예</th></tr>
+      <tr><td>해요체 통일</td><td class="wrap-ok">모든 문구는 해요체</td><td class="wrap-ok"><span class="ok">✅ "마감했어요"</span> / <span class="no">❌ "마감되었습니다"</span></td></tr>
+      <tr><td>능동형 우선</td><td class="wrap-ok">수동형 대신 능동형</td><td class="wrap-ok"><span class="ok">✅ "기록을 지웠어요"</span> / <span class="no">❌ "기록이 삭제되었어요"</span></td></tr>
+      <tr><td>긍정형 우선</td><td class="wrap-ok">부정 표현 최소화, 에러도 긍정형으로</td><td class="wrap-ok"><span class="ok">✅ "내일 다시 마감할 수 있어요"</span> / <span class="no">❌ "오늘은 마감할 수 없어요"</span></td></tr>
+      <tr><td>캐주얼한 경어</td><td class="wrap-ok">과도한 존댓말 금지</td><td class="wrap-ok"><span class="no">❌ "~하시겠어요?", "~께", "계시다"</span></td></tr>
+      <tr><td>명사 나열 회피</td><td class="wrap-ok">한자어 명사+명사를 동사로 풀어쓰기</td><td class="wrap-ok"><span class="ok">✅ "하루를 마감해요"</span> / <span class="no">❌ "일일 마감 수행"</span></td></tr>
+    </table>
+
+    <h3>영어 — 같은 원칙의 영어 구현</h3>
+    <table>
+      <tr><th>원칙</th><th>규칙</th><th>예</th></tr>
+      <tr><td>대화체</td><td class="wrap-ok">Sentence case, 축약형(you're, that's) 허용</td><td class="wrap-ok"><span class="ok">✅ "Today's closed"</span> / <span class="no">❌ "Daily Closing Has Been Completed"</span></td></tr>
+      <tr><td>능동태</td><td class="wrap-ok">수동태 대신 능동태</td><td class="wrap-ok"><span class="ok">✅ "Record deleted"</span> / <span class="no">❌ "The record has been deleted by the system"</span></td></tr>
+      <tr><td>긍정형</td><td class="wrap-ok">에러도 다음 행동 중심으로</td><td class="wrap-ok"><span class="ok">✅ "You can close tomorrow"</span> / <span class="no">❌ "You cannot close today"</span></td></tr>
+      <tr><td>간결</td><td class="wrap-ok">필러 없이 동사 중심</td><td class="wrap-ok"><span class="ok">✅ "Close today"</span> / <span class="no">❌ "Proceed to perform daily closing"</span></td></tr>
+    </table>
+
+    <div class="callout">
+      <b>예외</b> — 손실회피 카피(스트릭 위험 알림)와 파괴적 행동 확인(삭제·초기화)은 부정형을 제한적으로 허용한다.
+      단, 죄책감을 자극하는 문구("또 실패했네요" / "You failed again" 류)는 어떤 경우에도 금지 — 원칙 4(죄책감 대신 진도)가 우선한다.
+    </div>
+
+    <h3>핵심 카피 기준 예시 (금액은 앱 통화로 표기)</h3>
+    <table>
+      <tr><th>상황</th><th>한국어</th><th>영어</th></tr>
+      <tr><td>마감 완료</td><td class="wrap-ok">"오늘도 마감했어요. 🔥 24일째예요"</td><td class="wrap-ok">"Today's closed. 🔥 Day 24."</td></tr>
+      <tr><td>무너짐 기록</td><td class="wrap-ok">"기록했어요. 지금까지 아낀 54,000원은 그대로예요"</td><td class="wrap-ok">"Logged. The $54 you've saved is still yours."</td></tr>
+      <tr><td>소급 확인</td><td class="wrap-ok">"어제는 어땠어요?" → [참았어요] [무너졌어요] [기억나지 않아요]</td><td class="wrap-ok">"How was yesterday?" → [Stayed strong] [Slipped] [Can't remember]</td></tr>
+      <tr><td>복귀 화면</td><td class="wrap-ok">"다시 왔네요. 스트릭은 끊겼지만 절제 34일 · 128,000원은 그대로예요"</td><td class="wrap-ok">"Welcome back. Your streak ended — but 34 clean days · $128 saved are still yours."</td></tr>
+      <tr><td>스트릭 위험 알림</td><td class="wrap-ok">"🔥 23일이 사라지기 전에 오늘을 마감해요"</td><td class="wrap-ok">"Don't lose your 23-day streak — close today 🔥"</td></tr>
+    </table>
+  </section>
+
+  <!-- ============ 15 ============ -->
+  <section id="s15">
+    <div class="sec-label">15 — 비목표 (Non-Goals)</div>
+    <h2>하지 않는 것</h2>
+    <ul>
+      <li>부정 기록의 완벽한 방지 — 정직성은 강제가 아니라 인센티브(🔥 규칙)로 유도한다</li>
+      <li>"할 일" 관리 — 이 앱은 더하는 도구가 아니다</li>
+      <li>환율 연동, 통화 간 재환산, 구매력(PPP) 기반 단가 보정 — 단가는 "체감되는 숫자"면 충분하다 (§6.2)</li>
+      <li>화면 구조·디자인 시스템 정의 — 본 문서 범위 밖 (<code>docs/design.md</code>에서 다룬다)</li>
+    </ul>
+  </section>
+
+  <!-- ============ 16 ============ -->
+  <section id="s16">
+    <div class="sec-label">16 — 참고 자료</div>
+    <h2>참고 자료</h2>
+    <ul>
+      <li><a href="https://developers-apps-in-toss.toss.im/design/ux-writing.html">토스 UX Writing 가이드</a></li>
+      <li>흡연량: <a href="https://chs.kdca.go.kr/cdhs/biz/pblcVis/pop_idx.do?visIdxSn=666">질병관리청 — 현재흡연자의 하루평균흡연량</a></li>
+      <li>배달 거래액·결제 건수: <a href="https://biz.heraldcorp.com/article/10665488">헤럴드경제 — 배달앱 사용 월 1.2억 건 역대 최고</a>, <a href="https://economist.co.kr/article/view/ecn202507090014">이코노미스트 — 배달 시장 전망</a></li>
+      <li>주류 지출: <a href="https://www.khan.co.kr/article/201405270711111">경향신문 — 가구당 한달 평균 술값</a>, <a href="https://www.khepi.or.kr/acs/acsStat/result?menuId=MENU00686&tableGubun=DATA040204">절주온 — 알코올 소비 통계</a></li>
+      <li>USD 프리셋 단가 근거 조사: 출시 전 과제 (§5.3)</li>
+    </ul>
+  </section>
+
+  <footer>
+    <span>Not-To-Do-List · PRD v1 · 2026-07-06 · 확정 (i18n 개정 반영)</span>
+    <span>docs/PRD-v1.md 렌더링</span>
+  </footer>
+</div>
+</body>
+</html>
