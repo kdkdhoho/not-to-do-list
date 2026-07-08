@@ -38,13 +38,15 @@ public enum StreakEngine {
         let yesterdayOpen = input.closedDays[yesterday] == nil && !input.pausedDays.contains(yesterday)
 
         // 1. 그제 이전의 공백 수집: 마지막 마무리일부터 그제까지
+        // 스캔은 현재 스트릭(state.current)이 보증하는 실제 이력 이전으로는 내려가지 않는다.
+        // closedDays엔 "기록 없음"을 나타내는 경계 마커가 없어 히스토리 시작 이전 날짜도
+        // 실제 공백과 구분되지 않는 nil로 조회되기 때문 — 그 이전은 공백이 아니라 "기록 이전"이다.
+        let earliestKnown = yesterday.advanced(by: -state.current, calendar: calendar)
         var gaps: [DayStamp] = []
         var cursor = input.today.advanced(by: -2, calendar: calendar)
-        while input.closedDays[cursor] == nil {
+        while cursor > earliestKnown, input.closedDays[cursor] == nil {
             if !input.pausedDays.contains(cursor) { gaps.append(cursor) }
             cursor = cursor.advanced(by: -1, calendar: calendar)
-            // 마무리 기록이 하나도 없는 신규 사용자: 스트릭 0이면 공백 개념이 없다
-            if state.current == 0 && gaps.count > Self.maxFreezes { break }
             if gaps.count > Self.maxFreezes { break }  // 이미 리셋 확정
         }
         gaps.sort()

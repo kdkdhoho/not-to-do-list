@@ -71,6 +71,17 @@ struct StreakEngineTests {
         #expect(d.freezeFills.isEmpty)       // 일시정지일은 공백이 아니다 (PRD §11)
     }
 
+    @Test func 신규_스트릭_초기_며칠은_기록이전_날짜를_공백으로_보지_않는다() {
+        // 어제 하루만 마무리된 갓 시작한 스트릭 — closedDays엔 그 이전 날짜가 아예 없다.
+        // 스캔이 history 시작 이전까지 무한정 내려가 가짜 공백을 셌던 회귀 버그의 재현.
+        let input = StreakInput(today: today, closedDays: [today.advanced(by: -1, calendar: cal): .sameDay],
+                                pausedDays: [], state: StreakState(current: 1, best: 1))
+        let d = StreakEngine.evaluate(input, calendar: cal)
+        #expect(!d.didReset)
+        #expect(d.freezeFills.isEmpty)
+        #expect(d.state.current == 1)   // 어제 1일치 마무리만 반영 — 이전 히스토리가 없다고 리셋되지 않는다
+    }
+
     @Test func 적립은_7일마다_1개_최대2개() {
         var s = StreakState(current: 6, best: 6, freezes: 0, freezeAccrual: 6)
         s = StreakEngine.accrueAfterClose(s)   // 7일째 마무리
