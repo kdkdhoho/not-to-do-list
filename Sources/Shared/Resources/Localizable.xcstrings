@@ -18,6 +18,70 @@
         }
       }
     },
+    "closing.confirm" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Close it"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "이대로 마무리하기"
+          }
+        }
+      }
+    },
+    "closing.lockedCaption" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Logged earlier · locked"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "낮에 기록했어요 · 잠김"
+          }
+        }
+      }
+    },
+    "closing.subtitle" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mark only the slips — the rest counts as clean"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "무너진 습관만 표시해요 — 나머지는 참은 거예요"
+          }
+        }
+      }
+    },
+    "closing.title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Let's close today"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "오늘 하루 마무리할게요"
+          }
+        }
+      }
+    },
     "detail.id" : {
       "localizations" : {
         "en" : {
@@ -132,6 +196,86 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Application"
+          }
+        }
+      }
+    },
+    "lapse.cancel" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cancel"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "취소"
+          }
+        }
+      }
+    },
+    "lapse.confirm" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Log it"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "기록하기"
+          }
+        }
+      }
+    },
+    "lapse.keepNote" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Logging won't break your streak — just close the day"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "기록해도 하루를 마무리하면 스트릭은 그대로예요"
+          }
+        }
+      }
+    },
+    "lapse.memoPlaceholder" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add a note (optional)"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "메모를 남길 수 있어요 (선택)"
+          }
+        }
+      }
+    },
+    "lapse.title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Let's log this slip"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "무너진 순간을 기록할게요"
           }
         }
       }
@@ -289,6 +433,22 @@
         }
       }
     },
+    "tab.record" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "History"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "기록"
+          }
+        }
+      }
+    },
     "tab.settings" : {
       "extractionState" : "stale",
       "localizations" : {
@@ -302,6 +462,246 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "설정"
+          }
+        }
+      }
+    },
+    "tab.today" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Today"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "오늘"
+          }
+        }
+      }
+    },
+    "today.addFirstHabit" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add your first habit"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "첫 습관 등록하기"
+          }
+        }
+      }
+    },
+    "today.closeCTA" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Close today"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "오늘 하루 마무리하기"
+          }
+        }
+      }
+    },
+    "today.closedChip" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Today's closed · see you tomorrow"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "오늘 하루 마무리했어요 · 내일 봐요"
+          }
+        }
+      }
+    },
+    "today.dPlus %lld" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "D+%lld"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "D+%lld"
+          }
+        }
+      }
+    },
+    "today.lapseAction" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Log a slip"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "무너짐 기록하기"
+          }
+        }
+      }
+    },
+    "today.savedBooks %lld" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Time saved for %lld books"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "책 %lld권 읽을 시간을 아꼈어요"
+          }
+        }
+      }
+    },
+    "today.savedMoney %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You've saved %@!"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@을 아꼈어요!"
+          }
+        }
+      }
+    },
+    "today.savedPages %lld" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Time saved for %lld pages"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "책 %lld페이지 읽을 시간을 아꼈어요"
+          }
+        }
+      }
+    },
+    "today.streakLabel" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "days closed"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "일째 마무리"
+          }
+        }
+      }
+    },
+    "today.streakLabelOpen" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Today's still open"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "오늘 마무리가 남아 있어요"
+          }
+        }
+      }
+    },
+    "yesterday.lapsed" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Slipped"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "못 참았어요"
+          }
+        }
+      }
+    },
+    "yesterday.resisted" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Stayed strong"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "참았어요"
+          }
+        }
+      }
+    },
+    "yesterday.title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "How was yesterday?"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "어제는 어땠어요?"
+          }
+        }
+      }
+    },
+    "yesterday.unknown" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Can't remember"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "기억나지 않아요"
           }
         }
       }
