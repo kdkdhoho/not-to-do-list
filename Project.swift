@@ -93,5 +93,23 @@ let project = Project(
                 ]
             )
         ),
+        // MARK: - Tests
+        .target(
+            name: "SharedTests",
+            destinations: destinations,
+            product: .unitTests,
+            bundleId: "\(bundleId).sharedTests",
+            deploymentTargets: .iOS(deploymentTarget),
+            infoPlist: .default,
+            buildableFolders: ["Tests/SharedTests"],
+            dependencies: [
+                .target(name: "Shared"),
+            ],
+            settings: .settings(
+                base: [
+                    "DEVELOPMENT_TEAM": "QD353RFHM5",
+                ]
+            )
+        ),
     ]
 )
